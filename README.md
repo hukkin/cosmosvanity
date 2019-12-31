@@ -1,1 +1,1 @@
-# cosmosgo
+# cosmosvanity
