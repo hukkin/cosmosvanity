@@ -7,3 +7,14 @@
 > Version 0.0.1
 
 > [Cosmos](https://cosmos.network) vanity address generator. Command line user interface.
+
+## Features
+* Generate vanity Cosmos bech32 addresses
+* Use all CPU cores
+* Specify substrings that the address must start with, end with, or contain
+
+## Installing
+Download the latest released binary from [the _Releases_ page](https://github.com/hukkinj1/cosmosvanity/releases).
+
+## Usage
+TODO: Add usage examples
