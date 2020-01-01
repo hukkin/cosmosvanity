@@ -7,13 +7,3 @@
 > Version 0.0.1
 
 > [Cosmos](https://cosmos.network) vanity address generator. Command line user interface.
-
-
-## Contributing
-### Releasing
-Run the following to tag a release and publish binaries on Github:
-```bash
-bump2version (major | minor | patch)
-git push origin master
-export GITHUB_TOKEN=<secret-token-from-github> && goreleaser
-```
