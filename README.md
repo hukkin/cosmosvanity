@@ -17,4 +17,10 @@
 Download the latest released binary from [the _Releases_ page](https://github.com/hukkinj1/cosmosvanity/releases).
 
 ## Usage
-TODO: Add usage examples
+Examples:
+```bash
+./cosmosvanity --startswith 777
+./cosmosvanity --endswith 888
+./cosmosvanity --contains 8888
+./cosmosvanity --contains 8888 --startswith a --endswith c
+```
