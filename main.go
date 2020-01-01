@@ -114,6 +114,6 @@ func main() {
 	}
 
 	matchingWallet := findMatchingWalletMultiProcess(m)
-	fmt.Println("A match found:")
+	fmt.Println(":::: Matching wallet found ::::")
 	fmt.Println(matchingWallet)
 }
