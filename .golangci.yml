@@ -1,0 +1,9 @@
+linters:
+  # Use default linters plus these extras
+  enable:
+    - golint
+    - gofmt
+    - goimports
+
+service:
+  golangci-lint-version: 1.22.x # use the fixed version to not introduce new linters unexpectedly

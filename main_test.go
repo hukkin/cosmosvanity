@@ -1,8 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
 
-import "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/require"
+)
 
 func TestGenerateWallet(t *testing.T) {
 	w := generateWallet()
