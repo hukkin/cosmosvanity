@@ -4,7 +4,7 @@
 # cosmosvanity
 
 <!--- Don't edit the version line below manually. Let bump2version do it for you. -->
-> Version 0.0.1
+> Version 0.0.2
 
 > [Cosmos](https://cosmos.network) vanity address generator. Command line user interface.
 
