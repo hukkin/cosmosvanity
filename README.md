@@ -12,13 +12,13 @@
 * Generate Cosmos bech32 vanity addresses
 * Use all CPU cores
 * Specify a substring that the address must
-    * start with (`--startswith` flag)
-    * end with (`--endswith` flag)
-    * contain (`--contains` flag)
-* Supports Linux, macOS and Windows
+    * start with (`--startswith`)
+    * end with (`--endswith`)
+    * contain (`--contains`)
+* Binaries built for Linux, macOS and Windows
 
 ## Installing
-Download the latest binary release from the [_Releases_ page](https://github.com/hukkinj1/cosmosvanity/releases). Alternatively, build from source yourself.
+Download the latest binary release from the [_Releases_](https://github.com/hukkinj1/cosmosvanity/releases) page. Alternatively, build from source yourself.
 
 ## Usage examples
 Find an address that starts with "00000" (e.g. cosmos100000v3fpv4qg2a9ea6sj70gykxpt63wgjen2p)
