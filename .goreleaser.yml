@@ -1,0 +1,18 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+- env:
+  # Goreleaser doesnt support CGO
+  - CGO_ENABLED=0
+  goos:
+  - linux
+  - darwin
+  - windows
+  goarch:
+  - amd64
+checksum:
+  # Use a simpler name than the default
+  name_template: 'checksums.txt'
+changelog:
+  skip: true
