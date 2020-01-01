@@ -16,3 +16,6 @@
 
 # Ignore the result of `go build`
 cosmosvanity
+
+# coverage file of `go test`
+coverage.txt
