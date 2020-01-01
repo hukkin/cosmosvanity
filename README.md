@@ -6,7 +6,7 @@
 <!--- Don't edit the version line below manually. Let bump2version do it for you. -->
 > Version 0.0.2
 
-> [Cosmos](https://cosmos.network) vanity address generator. Command line user interface.
+> CLI tool for generating [Cosmos](https://cosmos.network) vanity addresses
 
 ## Features
 * Generate Cosmos bech32 vanity addresses
