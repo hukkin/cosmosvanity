@@ -48,11 +48,11 @@ func (m *matcher) ValidationErrors() []string {
 	if len(m.Contains) > 38 || len(m.StartsWith) > 38 || len(m.EndsWith) > 38 {
 		errs = append(errs, "ERROR: A provided matcher is too long. Must be max 38 characters.")
 	}
-	if m.Digits < 0 || m.Digits > 38 {
-		errs = append(errs, "ERROR: Invalid digit count")
+	if m.Digits < 0 || m.Letters < 0 {
+		errs = append(errs, "ERROR: Can't require negative amount of characters")
 	}
-	if m.Letters < 0 || m.Letters > 38 {
-		errs = append(errs, "ERROR: Invalid letter count")
+	if m.Digits+m.Letters > 38 {
+		errs = append(errs, "ERROR: Can't require more than 38 characters")
 	}
 	return errs
 }
