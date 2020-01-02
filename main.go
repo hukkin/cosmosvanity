@@ -32,6 +32,17 @@ func (m *matcher) Match(candidate string) bool {
 	return true
 }
 
+func (m *matcher) ValidationErrors() []string {
+	var errs []string
+	if !bech32Only(m.Contains) || !bech32Only(m.StartsWith) || !bech32Only(m.EndsWith) {
+		errs = append(errs, "ERROR: A provided matcher contains bech32 incompatible characters")
+	}
+	if len(m.Contains) > 38 || len(m.StartsWith) > 38 || len(m.EndsWith) > 38 {
+		errs = append(errs, "ERROR: A provided matcher is too long. Must be max 38 characters.")
+	}
+	return errs
+}
+
 type wallet struct {
 	Address string
 	Pubkey  [33]byte
@@ -100,17 +111,17 @@ func main() {
 	flag.StringVarP(&mustEndWith, "endswith", "e", "", "A string that the address must end with")
 	flag.Parse()
 
-	mustContain = strings.ToLower(mustContain)
-	mustStartWith = strings.ToLower(mustStartWith)
-	mustEndWith = strings.ToLower(mustEndWith)
-	if !bech32Only(mustContain) || !bech32Only(mustStartWith) || !bech32Only(mustEndWith) {
-		fmt.Println("ERROR: A provided matcher flag contains bech32 incompatible chars")
-		os.Exit(1)
-	}
 	m := matcher{
-		StartsWith: mustStartWith,
-		EndsWith:   mustEndWith,
-		Contains:   mustContain,
+		StartsWith: strings.ToLower(mustStartWith),
+		EndsWith:   strings.ToLower(mustEndWith),
+		Contains:   strings.ToLower(mustContain),
+	}
+	matcherValidationErrs := m.ValidationErrors()
+	if len(matcherValidationErrs) > 0 {
+		for i := 0; i < len(matcherValidationErrs); i++ {
+			fmt.Println(matcherValidationErrs[i])
+		}
+		os.Exit(1)
 	}
 
 	matchingWallet := findMatchingWalletMultiProcess(m)
