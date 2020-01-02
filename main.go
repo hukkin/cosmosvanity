@@ -17,6 +17,8 @@ type matcher struct {
 	StartsWith string
 	EndsWith   string
 	Contains   string
+	Letters    int
+	Digits     int
 }
 
 func (m *matcher) Match(candidate string) bool {
@@ -29,6 +31,12 @@ func (m *matcher) Match(candidate string) bool {
 	if !strings.Contains(candidate, m.Contains) {
 		return false
 	}
+	if countUnionChars(candidate, bech32digits) < m.Digits {
+		return false
+	}
+	if countUnionChars(candidate, bech32letters) < m.Letters {
+		return false
+	}
 	return true
 }
 
@@ -39,6 +47,12 @@ func (m *matcher) ValidationErrors() []string {
 	}
 	if len(m.Contains) > 38 || len(m.StartsWith) > 38 || len(m.EndsWith) > 38 {
 		errs = append(errs, "ERROR: A provided matcher is too long. Must be max 38 characters.")
+	}
+	if m.Digits < 0 || m.Digits > 38 {
+		errs = append(errs, "ERROR: Invalid digit count")
+	}
+	if m.Letters < 0 || m.Letters > 38 {
+		errs = append(errs, "ERROR: Invalid letter count")
 	}
 	return errs
 }
@@ -90,31 +104,40 @@ func findMatchingWalletMultiProcess(m matcher) wallet {
 	return <-ch
 }
 
+const bech32digits = "023456789"
+const bech32letters = "acdefghjklmnpqrstuvwxyzACDEFGHJKLMNPQRSTUVWXYZ"
+
 // This is alphanumeric chars minus chars "1", "b", "i", "o" (case insensitive)
-const bech32chars = "acdefghjklmnpqrstuvwxyzACDEFGHJKLMNPQRSTUVWXYZ023456789"
+const bech32chars = bech32digits + bech32letters
 
 func bech32Only(s string) bool {
+	return countUnionChars(s, bech32chars) == len(s)
+}
+
+func countUnionChars(s string, letterSet string) int {
+	count := 0
 	for _, char := range s {
-		if !strings.Contains(bech32chars, string(char)) {
-			return false
+		if strings.Contains(letterSet, string(char)) {
+			count++
 		}
 	}
-	return true
+	return count
 }
 
 func main() {
-	var mustContain string
-	var mustStartWith string
-	var mustEndWith string
-	flag.StringVarP(&mustContain, "contains", "c", "", "A string that the address must contain")
-	flag.StringVarP(&mustStartWith, "startswith", "s", "", "A string that the address must start with")
-	flag.StringVarP(&mustEndWith, "endswith", "e", "", "A string that the address must end with")
+	var mustContain *string = flag.StringP("contains", "c", "", "A string that the address must contain")
+	var mustStartWith *string = flag.StringP("startswith", "s", "", "A string that the address must start with")
+	var mustEndWith *string = flag.StringP("endswith", "e", "", "A string that the address must end with")
+	var letters *int = flag.IntP("letters", "l", 0, "Amount of letters (a-z) that the address must contain")
+	var digits *int = flag.IntP("digits", "d", 0, "Amount of digits (0-9) that the address must contain")
 	flag.Parse()
 
 	m := matcher{
-		StartsWith: strings.ToLower(mustStartWith),
-		EndsWith:   strings.ToLower(mustEndWith),
-		Contains:   strings.ToLower(mustContain),
+		StartsWith: strings.ToLower(*mustStartWith),
+		EndsWith:   strings.ToLower(*mustEndWith),
+		Contains:   strings.ToLower(*mustContain),
+		Letters:    *letters,
+		Digits:     *digits,
 	}
 	matcherValidationErrs := m.ValidationErrors()
 	if len(matcherValidationErrs) > 0 {

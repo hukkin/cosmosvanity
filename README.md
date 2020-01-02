@@ -15,6 +15,7 @@
     * start with (`--startswith`)
     * end with (`--endswith`)
     * contain (`--contains`)
+* Set required minimum amount of letters (a-z) or digits (0-9) in the address
 * Binaries built for Linux, macOS and Windows
 
 ## Installing
@@ -36,7 +37,17 @@ Find an address containing the substring "gener" (e.g. cosmos1z39wgener7azgh22s5
 ./cosmosvanity --contains gener
 ```
 
-Combine flags shown above
+Find an address consisting of letters only (e.g. cosmos1rfqkejeaxlxwtjxucnrathlzgnvgcgldzmuxxe)
+```bash
+./cosmosvanity --letters 38
+```
+
+Find an address with at least 26 digits (e.g. cosmos1r573c4086585u084926726x535y3k2ktxpr88l)
+```bash
+./cosmosvanity --digits 26
+```
+
+Combine flags introduced above
 ```bash
 ./cosmosvanity --contains 8888 --startswith a --endswith c
 ```
