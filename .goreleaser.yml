@@ -1,6 +1,10 @@
 before:
   hooks:
-    - go mod tidy
+  - go mod tidy
+archives:
+- replacements:
+    # give a more user friendly name to macOS
+    darwin: macOS
 builds:
 - env:
   # Goreleaser doesnt support CGO
