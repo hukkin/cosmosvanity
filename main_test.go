@@ -15,13 +15,15 @@ func TestGenerateWallet(t *testing.T) {
 }
 
 func TestFindMatchingWallet(t *testing.T) {
-	m := matcher{StartsWith: "a"}
+	firstChars := "aa"
+	m := matcher{StartsWith: firstChars}
 	w := findMatchingWallet(m)
-	require.Equal(t, w.Address[:8], "cosmos1a", "Incorrect address prefix")
+	require.Equal(t, w.Address[:7+len(firstChars)], "cosmos1"+firstChars, "Incorrect address prefix")
 }
 
 func TestFindMatchingWalletMultiProcess(t *testing.T) {
-	m := matcher{EndsWith: "a"}
+	lastChars := "zz"
+	m := matcher{EndsWith: lastChars}
 	w := findMatchingWalletMultiProcess(m)
-	require.Equal(t, w.Address[len(w.Address)-1:], "a", "Incorrect address suffix")
+	require.Equal(t, w.Address[len(w.Address)-len(lastChars):], lastChars, "Incorrect address suffix")
 }
