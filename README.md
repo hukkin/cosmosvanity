@@ -12,9 +12,9 @@
 * Generate Cosmos bech32 vanity addresses
 * Use all CPU cores
 * Specify a substring that the address must
-    * start with (`--startswith`)
-    * end with (`--endswith`)
-    * contain (`--contains`)
+    * start with
+    * end with
+    * contain
 * Set required minimum amount of letters (a-z) or digits (0-9) in the address
 * Binaries built for Linux, macOS and Windows
 
