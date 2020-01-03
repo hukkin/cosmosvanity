@@ -21,9 +21,10 @@ func TestFindMatchingWallet(t *testing.T) {
 	require.Equal(t, w.Address[:7+len(firstChars)], "cosmos1"+firstChars, "Incorrect address prefix")
 }
 
-func TestFindMatchingWalletMultiProcess(t *testing.T) {
+func TestFindMatchingWalletConcurrently(t *testing.T) {
+	goroutineCount := 4
 	lastChars := "zz"
 	m := matcher{EndsWith: lastChars}
-	w := findMatchingWalletMultiProcess(m)
+	w := findMatchingWalletConcurrently(m, goroutineCount)
 	require.Equal(t, w.Address[len(w.Address)-len(lastChars):], lastChars, "Incorrect address suffix")
 }

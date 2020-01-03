@@ -96,9 +96,9 @@ func findMatchingWallets(ch chan wallet, m matcher) {
 	}
 }
 
-func findMatchingWalletMultiProcess(m matcher) wallet {
+func findMatchingWalletConcurrently(m matcher, goroutines int) wallet {
 	ch := make(chan wallet)
-	for i := 0; i < runtime.NumCPU(); i++ {
+	for i := 0; i < goroutines; i++ {
 		go findMatchingWallets(ch, m)
 	}
 	return <-ch
@@ -147,7 +147,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	matchingWallet := findMatchingWalletMultiProcess(m)
+	matchingWallet := findMatchingWalletConcurrently(m, runtime.NumCPU())
 	fmt.Println(":::: Matching wallet found ::::")
 	fmt.Println(matchingWallet)
 }
