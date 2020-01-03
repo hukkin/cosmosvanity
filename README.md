@@ -52,6 +52,11 @@ Generate 5 addresses (the default is 1)
 ./cosmosvanity -n 5
 ```
 
+Restrict to using only 1 CPU thread. This value defaults to the number of CPUs available.
+```bash
+./cosmosvanity --cpus 1
+```
+
 Combine flags introduced above
 ```bash
 ./cosmosvanity --contains 8888 --startswith a --endswith c

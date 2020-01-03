@@ -128,6 +128,7 @@ func countUnionChars(s string, letterSet string) int {
 
 func main() {
 	var walletsToFind *int = flag.IntP("count", "n", 1, "Amount of matching wallets to find")
+	var cpuCount *int = flag.Int("cpus", runtime.NumCPU(), "Amount of CPU cores to use")
 
 	var mustContain *string = flag.StringP("contains", "c", "", "A string that the address must contain")
 	var mustStartWith *string = flag.StringP("startswith", "s", "", "A string that the address must start with")
@@ -138,6 +139,10 @@ func main() {
 
 	if *walletsToFind < 1 {
 		fmt.Println("ERROR: The number of wallets to generate must be 1 or more")
+		os.Exit(1)
+	}
+	if *cpuCount < 1 {
+		fmt.Println("ERROR: Must use at least 1 CPU core")
 		os.Exit(1)
 	}
 
@@ -158,7 +163,7 @@ func main() {
 
 	var matchingWallet wallet
 	for i := 0; i < *walletsToFind; i++ {
-		matchingWallet = findMatchingWalletConcurrent(m, runtime.NumCPU())
+		matchingWallet = findMatchingWalletConcurrent(m, *cpuCount)
 		fmt.Printf(":::: Matching wallet %d/%d found ::::\n", i+1, *walletsToFind)
 		fmt.Println(matchingWallet)
 	}
