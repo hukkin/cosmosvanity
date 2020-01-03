@@ -22,6 +22,7 @@ type matcher struct {
 }
 
 func (m *matcher) Match(candidate string) bool {
+	candidate = strings.TrimPrefix(candidate, "cosmos1")
 	if !strings.HasPrefix(candidate, m.StartsWith) {
 		return false
 	}
@@ -80,26 +81,37 @@ func generateWallet() wallet {
 	return wallet{bech32Addr, pubkey, privkey}
 }
 
+// TODO: this function is now unused. Remove it and adapt its test to do something useful
 func findMatchingWallet(m matcher) wallet {
 	for {
 		w := generateWallet()
-		trimmedAdress := strings.TrimPrefix(w.Address, "cosmos1")
-		if m.Match(trimmedAdress) {
+		if m.Match(w.Address) {
 			return w
 		}
 	}
 }
 
-func findMatchingWallets(ch chan wallet, m matcher) {
+func findMatchingWallets(ch chan wallet, quit chan struct{}, m matcher) {
 	for {
-		ch <- findMatchingWallet(m)
+		select {
+		default:
+			w := generateWallet()
+			if m.Match(w.Address) {
+				ch <- w
+			}
+		case <-quit:
+			return
+		}
 	}
 }
 
 func findMatchingWalletConcurrently(m matcher, goroutines int) wallet {
 	ch := make(chan wallet)
+	quit := make(chan struct{})
+	defer close(quit)
+
 	for i := 0; i < goroutines; i++ {
-		go findMatchingWallets(ch, m)
+		go findMatchingWallets(ch, quit, m)
 	}
 	return <-ch
 }
@@ -125,12 +137,19 @@ func countUnionChars(s string, letterSet string) int {
 }
 
 func main() {
+	var walletsToFind *int = flag.IntP("count", "n", 1, "Amount of matching wallets to find")
+
 	var mustContain *string = flag.StringP("contains", "c", "", "A string that the address must contain")
 	var mustStartWith *string = flag.StringP("startswith", "s", "", "A string that the address must start with")
 	var mustEndWith *string = flag.StringP("endswith", "e", "", "A string that the address must end with")
 	var letters *int = flag.IntP("letters", "l", 0, "Amount of letters (a-z) that the address must contain")
 	var digits *int = flag.IntP("digits", "d", 0, "Amount of digits (0-9) that the address must contain")
 	flag.Parse()
+
+	if *walletsToFind < 1 {
+		fmt.Println("ERROR: The number of wallets to generate must be 1 or more")
+		os.Exit(1)
+	}
 
 	m := matcher{
 		StartsWith: strings.ToLower(*mustStartWith),
@@ -147,7 +166,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	matchingWallet := findMatchingWalletConcurrently(m, runtime.NumCPU())
-	fmt.Println(":::: Matching wallet found ::::")
-	fmt.Println(matchingWallet)
+	var matchingWallet wallet
+	for i := 0; i < *walletsToFind; i++ {
+		matchingWallet = findMatchingWalletConcurrently(m, runtime.NumCPU())
+		fmt.Printf(":::: Matching wallet %d/%d found ::::\n", i+1, *walletsToFind)
+		fmt.Println(matchingWallet)
+	}
 }
