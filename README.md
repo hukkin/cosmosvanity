@@ -11,11 +11,11 @@
 ## Features
 * Generate Cosmos bech32 vanity addresses
 * Use all CPU cores
-* Specify a substring that the address must
+* Specify a substring that the addresses must
     * start with
     * end with
     * contain
-* Set required minimum amount of letters (a-z) or digits (0-9) in the address
+* Set required minimum amount of letters (a-z) or digits (0-9) in the addresses
 * Binaries built for Linux, macOS and Windows
 
 ## Installing
@@ -45,6 +45,11 @@ Find an address consisting of letters only (e.g. cosmos1rfqkejeaxlxwtjxucnrathlz
 Find an address with at least 26 digits (e.g. cosmos1r573c4086585u084926726x535y3k2ktxpr88l)
 ```bash
 ./cosmosvanity --digits 26
+```
+
+Generate 5 addresses (the default is 1)
+```bash
+./cosmosvanity -n 5
 ```
 
 Combine flags introduced above

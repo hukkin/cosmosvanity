@@ -81,31 +81,21 @@ func generateWallet() wallet {
 	return wallet{bech32Addr, pubkey, privkey}
 }
 
-// TODO: this function is now unused. Remove it and adapt its test to do something useful
-func findMatchingWallet(m matcher) wallet {
-	for {
-		w := generateWallet()
-		if m.Match(w.Address) {
-			return w
-		}
-	}
-}
-
 func findMatchingWallets(ch chan wallet, quit chan struct{}, m matcher) {
 	for {
 		select {
+		case <-quit:
+			return
 		default:
 			w := generateWallet()
 			if m.Match(w.Address) {
 				ch <- w
 			}
-		case <-quit:
-			return
 		}
 	}
 }
 
-func findMatchingWalletConcurrently(m matcher, goroutines int) wallet {
+func findMatchingWalletConcurrent(m matcher, goroutines int) wallet {
 	ch := make(chan wallet)
 	quit := make(chan struct{})
 	defer close(quit)
@@ -168,7 +158,7 @@ func main() {
 
 	var matchingWallet wallet
 	for i := 0; i < *walletsToFind; i++ {
-		matchingWallet = findMatchingWalletConcurrently(m, runtime.NumCPU())
+		matchingWallet = findMatchingWalletConcurrent(m, runtime.NumCPU())
 		fmt.Printf(":::: Matching wallet %d/%d found ::::\n", i+1, *walletsToFind)
 		fmt.Println(matchingWallet)
 	}
