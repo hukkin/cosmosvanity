@@ -6,6 +6,7 @@ linters:
     - goimports
     - unconvert
     - unparam
+    - gocritic
 
 service:
   golangci-lint-version: 1.22.x # use the fixed version to not introduce new linters unexpectedly
