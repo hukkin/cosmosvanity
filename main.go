@@ -89,7 +89,12 @@ func findMatchingWallets(ch chan wallet, quit chan struct{}, m matcher) {
 		default:
 			w := generateWallet()
 			if m.Match(w.Address) {
-				ch <- w
+				// Do a non-blocking write instead of simple `ch <- w` to prevent
+				// blocking when it's time to quit and ch is full.
+				select {
+				case ch <- w:
+				default:
+				}
 			}
 		}
 	}
