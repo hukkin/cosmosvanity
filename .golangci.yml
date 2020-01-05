@@ -7,6 +7,9 @@ linters:
     - unconvert
     - unparam
     - gocritic
+    - gochecknoglobals
+    - nakedret
+    - misspell
 
 service:
-  golangci-lint-version: 1.22.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.21.x # use the fixed version to not introduce new linters unexpectedly
