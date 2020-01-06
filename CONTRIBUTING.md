@@ -3,9 +3,14 @@
 go test
 ```
 
+## Installing pre-commit hooks
+```bash
+pre-commit install
+```
+
 ## Running linters
 ```bash
-golangci-lint run
+pre-commit run -a
 ```
 
 ## Releasing
