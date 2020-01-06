@@ -1,4 +1,8 @@
 repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.4.0
+  hooks:
+  - id: check-yaml
 - repo: https://github.com/golangci/golangci-lint
   rev: v1.21.0
   hooks:
