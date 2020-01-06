@@ -5,6 +5,10 @@ archives:
 - replacements:
     # give a more user friendly name to macOS
     darwin: macOS
+  # Make Windows archives .zip, not .tar.gz
+  format_overrides:
+  - goos: windows
+    format: zip
 builds:
 - env:
   # Goreleaser doesnt support CGO
