@@ -4,7 +4,7 @@
 # cosmosvanity
 
 <!--- Don't edit the version line below manually. Let bump2version do it for you. -->
-> Version 0.2.1
+> Version 1.0.0
 
 > CLI tool for generating [Cosmos](https://cosmos.network) vanity addresses
 
