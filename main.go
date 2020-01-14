@@ -21,7 +21,7 @@ type matcher struct {
 	Digits     int
 }
 
-func (m *matcher) Match(candidate string) bool {
+func (m matcher) Match(candidate string) bool {
 	candidate = strings.TrimPrefix(candidate, "cosmos1")
 	if !strings.HasPrefix(candidate, m.StartsWith) {
 		return false
@@ -41,7 +41,7 @@ func (m *matcher) Match(candidate string) bool {
 	return true
 }
 
-func (m *matcher) ValidationErrors() []string {
+func (m matcher) ValidationErrors() []string {
 	var errs []string
 	if !bech32Only(m.Contains) || !bech32Only(m.StartsWith) || !bech32Only(m.EndsWith) {
 		errs = append(errs, "ERROR: A provided matcher contains bech32 incompatible characters")
