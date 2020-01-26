@@ -4,6 +4,7 @@ go:
   - 1.13.x
 
 script:
+  - pre-commit run -a
   - go build
   - go test -race -coverprofile=coverage.txt -covermode=atomic
 after_success:
