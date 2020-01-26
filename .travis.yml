@@ -4,10 +4,10 @@ go:
   - 1.13.x
 
 before_install:
-  - pip install "pre-commit==1.21.0"
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.23.1
 
 script:
-  - pre-commit run -a
+  - golangci-lint run
   - go build
   - go test -race -coverprofile=coverage.txt -covermode=atomic
 after_success:
