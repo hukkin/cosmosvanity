@@ -1,7 +1,6 @@
 linters:
   disable-all: true
   enable:
-    # Enabled by default
     - deadcode
     - errcheck
     - gosimple
@@ -12,7 +11,6 @@ linters:
     - typecheck
     - unused
     - varcheck
-    # Disabled by default
     - golint
     - gofmt
     - goimports
