@@ -1,6 +1,18 @@
 linters:
-  # Use default linters plus these extras
+  disable-all: true
   enable:
+    # Enabled by default
+    - deadcode
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unused
+    - varcheck
+    # Disabled by default
     - golint
     - gofmt
     - goimports
