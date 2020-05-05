@@ -20,3 +20,5 @@ linters:
     - gochecknoglobals
     - nakedret
     - misspell
+    - nolintlint
+    - asciicheck
