@@ -31,13 +31,15 @@ jobs:
       run: |
         go build
 
-    - name: Test
+    - name: Test non-Ubuntu platforms
+      if: matrix.os != 'ubuntu-latest'
       run: |
-        go test -race -coverprofile=coverage.txt -covermode=atomic
+        go test -race
 
-    - name: Report coverage
+    - name: Test Ubuntu and report coverage
       if: matrix.os == 'ubuntu-latest'
       run: |
+        go test -race -coverprofile=coverage.txt -covermode=atomic
         bash <(curl -s https://codecov.io/bash)
 
   github-publish:
