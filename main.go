@@ -9,8 +9,8 @@ import (
 
 	flag "github.com/spf13/pflag"
 
+	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
-	"github.com/tendermint/tendermint/libs/bech32"
 )
 
 type matcher struct {
@@ -60,19 +60,19 @@ func (m matcher) ValidationErrors() []string {
 
 type wallet struct {
 	Address string
-	Pubkey  [33]byte
-	Privkey [32]byte
+	Pubkey  []byte
+	Privkey []byte
 }
 
 func (w wallet) String() string {
 	return "Address:\t" + w.Address + "\n" +
-		"Public key:\t" + hex.EncodeToString(w.Pubkey[:]) + "\n" +
-		"Private key:\t" + hex.EncodeToString(w.Privkey[:])
+		"Public key:\t" + hex.EncodeToString(w.Pubkey) + "\n" +
+		"Private key:\t" + hex.EncodeToString(w.Privkey)
 }
 
 func generateWallet() wallet {
-	var privkey secp256k1.PrivKeySecp256k1 = secp256k1.GenPrivKey()
-	var pubkey secp256k1.PubKeySecp256k1 = privkey.PubKey().(secp256k1.PubKeySecp256k1)
+	var privkey secp256k1.PrivKey = secp256k1.GenPrivKey()
+	var pubkey secp256k1.PubKey = privkey.PubKey().(secp256k1.PubKey)
 	bech32Addr, err := bech32.ConvertAndEncode("cosmos", pubkey.Address())
 	if err != nil {
 		panic(err)
