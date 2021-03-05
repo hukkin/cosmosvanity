@@ -22,3 +22,4 @@ linters:
     - misspell
     - nolintlint
     - asciicheck
+    - revive

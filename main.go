@@ -132,14 +132,14 @@ func countUnionChars(s string, letterSet string) int {
 }
 
 func main() {
-	var walletsToFind *int = flag.IntP("count", "n", 1, "Amount of matching wallets to find")
-	var cpuCount *int = flag.Int("cpus", runtime.NumCPU(), "Amount of CPU cores to use")
+	var walletsToFind = flag.IntP("count", "n", 1, "Amount of matching wallets to find")
+	var cpuCount = flag.Int("cpus", runtime.NumCPU(), "Amount of CPU cores to use")
 
-	var mustContain *string = flag.StringP("contains", "c", "", "A string that the address must contain")
-	var mustStartWith *string = flag.StringP("startswith", "s", "", "A string that the address must start with")
-	var mustEndWith *string = flag.StringP("endswith", "e", "", "A string that the address must end with")
-	var letters *int = flag.IntP("letters", "l", 0, "Amount of letters (a-z) that the address must contain")
-	var digits *int = flag.IntP("digits", "d", 0, "Amount of digits (0-9) that the address must contain")
+	var mustContain = flag.StringP("contains", "c", "", "A string that the address must contain")
+	var mustStartWith = flag.StringP("startswith", "s", "", "A string that the address must start with")
+	var mustEndWith = flag.StringP("endswith", "e", "", "A string that the address must end with")
+	var letters = flag.IntP("letters", "l", 0, "Amount of letters (a-z) that the address must contain")
+	var digits = flag.IntP("digits", "d", 0, "Amount of digits (0-9) that the address must contain")
 	flag.Parse()
 
 	if *walletsToFind < 1 {
