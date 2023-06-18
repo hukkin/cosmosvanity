@@ -7,9 +7,17 @@ import (
 )
 
 func TestGenerateWallet(t *testing.T) {
-	w := generateWallet()
+	w := generateWallet("cosmos")
 	require.Equal(t, w.Address[:7], "cosmos1", "Incorrect bech32 prefix")
 	require.Equal(t, len(w.Address), 45, "Incorrect privkey length")
+	require.Equal(t, len(w.Pubkey), 33, "Incorrect pubkey length")
+	require.Equal(t, len(w.Privkey), 32, "Incorrect privkey length")
+}
+
+func TestGenerateWalletWithPrefix(t *testing.T) {
+	w := generateWallet("osmo")
+	require.Equal(t, w.Address[:5], "osmo1", "Incorrect bech32 prefix")
+	require.Equal(t, len(w.Address), 43, "Incorrect privkey length")
 	require.Equal(t, len(w.Pubkey), 33, "Incorrect pubkey length")
 	require.Equal(t, len(w.Privkey), 32, "Incorrect privkey length")
 }
