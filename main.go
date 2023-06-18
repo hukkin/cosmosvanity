@@ -17,6 +17,7 @@ type matcher struct {
 	StartsWith string
 	EndsWith   string
 	Contains   string
+	Prefix     string
 	Letters    int
 	Digits     int
 }
@@ -70,10 +71,10 @@ func (w wallet) String() string {
 		"Private key:\t" + hex.EncodeToString(w.Privkey)
 }
 
-func generateWallet() wallet {
+func generateWallet(prefix string) wallet {
 	var privkey secp256k1.PrivKey = secp256k1.GenPrivKey()
 	var pubkey secp256k1.PubKey = privkey.PubKey().(secp256k1.PubKey)
-	bech32Addr, err := bech32.ConvertAndEncode("cosmos", pubkey.Address())
+	bech32Addr, err := bech32.ConvertAndEncode(prefix, pubkey.Address())
 	if err != nil {
 		panic(err)
 	}
@@ -87,7 +88,7 @@ func findMatchingWallets(ch chan wallet, quit chan struct{}, m matcher) {
 		case <-quit:
 			return
 		default:
-			w := generateWallet()
+			w := generateWallet(m.Prefix)
 			if m.Match(w.Address) {
 				// Do a non-blocking write instead of simple `ch <- w` to prevent
 				// blocking when it's time to quit and ch is full.
@@ -140,6 +141,8 @@ func main() {
 	var mustEndWith = flag.StringP("endswith", "e", "", "A string that the address must end with")
 	var letters = flag.IntP("letters", "l", 0, "Amount of letters (a-z) that the address must contain")
 	var digits = flag.IntP("digits", "d", 0, "Amount of digits (0-9) that the address must contain")
+	var bechPrefix = flag.StringP("prefix", "p", "cosmos", "The bech32 prefix the address should have")
+
 	flag.Parse()
 
 	if *walletsToFind < 1 {
@@ -155,6 +158,7 @@ func main() {
 		StartsWith: strings.ToLower(*mustStartWith),
 		EndsWith:   strings.ToLower(*mustEndWith),
 		Contains:   strings.ToLower(*mustContain),
+		Prefix:     strings.ToLower(*bechPrefix),
 		Letters:    *letters,
 		Digits:     *digits,
 	}
