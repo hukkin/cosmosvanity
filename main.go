@@ -23,7 +23,10 @@ type matcher struct {
 }
 
 func (m matcher) Match(candidate string) bool {
-	candidate = strings.TrimPrefix(candidate, "cosmos1")
+	var builder strings.Builder
+	builder.WriteString(m.Prefix)
+	builder.WriteString("1") // build prefix string
+	candidate = strings.TrimPrefix(candidate, builder.String())
 	if !strings.HasPrefix(candidate, m.StartsWith) {
 		return false
 	}
